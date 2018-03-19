@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:createCartForCustomer.ofbiz.ws="http://createCartForCustomer.ofbiz.ws" xmlns:salesorder="salesorder" xmlns:searchproduct.ofbiz.com="http://searchproduct.ofbiz.com">
+  <process name="salesorder:SalesOrderProcess">
+    <active>true</active>
+    <process-events generate="all"/>
+    <provide partnerLink="client">
+      <service name="salesorder:SalesOrderProcessService" port="SalesOrderProcessPort"/>
+    </provide>
+    <invoke partnerLink="CreateCartForCustomerServicePL">
+      <service name="createCartForCustomer.ofbiz.ws:CreateCartForCustomerService" port="CreateCartForCustomer"/>
+    </invoke>
+    <invoke partnerLink="SearchProductServicePL">
+      <service name="searchproduct.ofbiz.com:SearchProductService" port="SearchProduct"/>
+    </invoke>
+  </process>
+</deploy>

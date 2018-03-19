@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="salesorder" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl1="http://searchproduct.ofbiz.com" name="SalesOrderProcess" targetNamespace="salesorder">
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of types participating in this BPEL process 
+     The BPEL Designer will generate default request and response types
+     but you can define or import any XML Schema type and use them as part 
+     of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="CreateCartForCustomerServicePLT">
+    <plnk:role name="CreateCartForCustomerServicePLR" portType="wsdl:CreateCartForCustomer"/>
+  </plnk:partnerLinkType>
+    <vprop:property name="property" type="p:string"/>
+    <vprop:propertyAlias messageType="tns:SalesOrderProcessRequestMessage" part="payload" propertyName="tns:property">
+    <vprop:query><![CDATA[/tns:Key]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns:searchProductRequest" part="parameters" propertyName="tns:property">
+    <vprop:query><![CDATA[/tns:Key]]></vprop:query>
+  </vprop:propertyAlias>
+    <plnk:partnerLinkType name="SearchProductServicePLT">
+    <plnk:role name="SearchProductServicePLR" portType="wsdl1:SearchProduct"/>
+  </plnk:partnerLinkType>
+    <import location="CreateCartForCustomer.wsdl" namespace="http://createCartForCustomer.ofbiz.ws"/>
+    <import location="SearchProduct.wsdl" namespace="http://searchproduct.ofbiz.com"/>
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="salesorder">
+
+            <element name="SalesOrderProcessRequest">
+                <complexType>
+                    <sequence>
+                    	<element name="Key" type="string"/>
+                    	<element name="CustomerID" type="string"/>
+                    	<element name="FirstName" type="string"/>
+                    	<element name="LastName" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="SalesOrderProcessResponse">
+                <complexType>
+                    <sequence>
+                        <element name="CartID" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="searchProduct">
+            	<complexType>
+            		<sequence>
+
+            			<element name="Key" type="string"/>
+            			<element name="ProductName" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="searchProductResponse">
+            	<complexType>
+            		<sequence>
+
+            			<element name="ProductID" type="string"/>
+            			<element name="Description" type="string"/>
+            			<element name="InventoryItemID" type="string"/>
+            			<element name="TaxClassID" type="string"/>
+            			<element name="CategoryID" type="string"/>
+            			<element name="Price" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
+        </schema>
+    </types>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type defintions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="SalesOrderProcessRequestMessage">
+        <part element="tns:SalesOrderProcessRequest" name="payload"/>
+    </message>
+    <message name="SalesOrderProcessResponseMessage">
+        <part element="tns:SalesOrderProcessResponse" name="payload"/>
+    </message>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+
+    <!-- portType implemented by the SalesOrderProcess BPEL process -->
+    <message name="searchProductRequest">
+    	<part element="tns:searchProduct" name="parameters"/>
+    </message>
+    <message name="searchProductResponse">
+    	<part element="tns:searchProductResponse" name="parameters"/>
+    </message>
+    <portType name="SalesOrderProcess">
+        <operation name="createCartForCustomer">
+            <input message="tns:SalesOrderProcessRequestMessage"/>
+            <output message="tns:SalesOrderProcessResponseMessage"/>
+        </operation>
+        <operation name="searchProduct">
+        	<input message="tns:searchProductRequest"/>
+        	<output message="tns:searchProductResponse"/>
+        </operation>
+    </portType>   
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PARTNER LINK TYPE DEFINITION
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="SalesOrderProcess">
+        <plnk:role name="SalesOrderProcessProvider" portType="tns:SalesOrderProcess"/>
+    </plnk:partnerLinkType>
+    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION - Defines the message format and protocol details
+     for a web service.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <binding name="SalesOrderProcessBinding"
+    	type="tns:SalesOrderProcess">
+    	<soap:binding style="document"
+    		transport="http://schemas.xmlsoap.org/soap/http" />
+    	<operation name="createCartForCustomer">
+    		<soap:operation
+    			soapAction="salesorder/createCartForCustomer" />
+    		<input>
+    			<soap:body use="literal" />
+    		</input>
+    		<output>
+    			<soap:body use="literal" />
+    		</output>
+    	</operation>
+    	<operation name="searchProduct">
+    		<soap:operation soapAction="salesorder/searchProduct" />
+    		<input>
+    			<soap:body use="literal" />
+    		</input>
+    		<output>
+    			<soap:body use="literal" />
+    		</output>
+    	</operation>
+    </binding>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION - A service groups a set of ports into
+     a service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <service name="SalesOrderProcessService">
+    	<port binding="tns:SalesOrderProcessBinding" name="SalesOrderProcessPort">
+    		<soap:address location="http://localhost:8080/ode/processes/SalesOrderProcess"/>
+    	</port>
+    </service>
+</definitions>

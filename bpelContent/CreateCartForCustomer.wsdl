@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://createCartForCustomer.ofbiz.ws" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://createCartForCustomer.ofbiz.ws" xmlns:intf="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://createCartForCustomer.ofbiz.ws" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="createCartForCustomer">
+    <complexType>
+     <sequence>
+      <element name="createCartForCustomerInput" type="impl:CreateCartForCustomerInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CreateCartForCustomerInput">
+    <sequence>
+     <element name="customerId" nillable="true" type="xsd:string"/>
+     <element name="firstName" nillable="true" type="xsd:string"/>
+     <element name="lastName" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="createCartForCustomerResponse">
+    <complexType>
+     <sequence>
+      <element name="createCartForCustomerReturn" type="impl:CreateCartForCustomerOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CreateCartForCustomerOutput">
+    <sequence>
+     <element name="cartId" nillable="true" type="xsd:string"/>
+     <element name="errorMessage" nillable="true" type="xsd:string"/>
+     <element name="responseMessage" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="createCartForCustomerRequest">
+
+      <wsdl:part element="impl:createCartForCustomer" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createCartForCustomerResponse">
+
+      <wsdl:part element="impl:createCartForCustomerResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="CreateCartForCustomer">
+
+      <wsdl:operation name="createCartForCustomer">
+
+         <wsdl:input message="impl:createCartForCustomerRequest" name="createCartForCustomerRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createCartForCustomerResponse" name="createCartForCustomerResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CreateCartForCustomerSoapBinding" type="impl:CreateCartForCustomer">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="createCartForCustomer">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createCartForCustomerRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createCartForCustomerResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CreateCartForCustomerService">
+
+      <wsdl:port binding="impl:CreateCartForCustomerSoapBinding" name="CreateCartForCustomer">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/CreateCartForCustomer"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

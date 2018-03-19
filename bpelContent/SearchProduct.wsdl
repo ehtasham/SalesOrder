@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://searchproduct.ofbiz.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://searchproduct.ofbiz.com" xmlns:intf="http://searchproduct.ofbiz.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://searchproduct.ofbiz.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="searchProduct">
+    <complexType>
+     <sequence>
+      <element name="searchProductInput" type="impl:SearchProductInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="SearchProductInput">
+    <sequence>
+     <element name="name" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="searchProductResponse">
+    <complexType>
+     <sequence>
+      <element name="searchProductReturn" type="impl:SearchProductOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="SearchProductOutput">
+    <sequence>
+     <element name="productId" nillable="true" type="xsd:string"/>
+     <element name="description" nillable="true" type="xsd:string"/>
+     <element name="inventoryItemId" nillable="true" type="xsd:string"/>
+     <element name="taxClassId" nillable="true" type="xsd:string"/>
+     <element name="categoryId" nillable="true" type="xsd:string"/>
+     <element name="price" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="searchProductResponse">
+
+      <wsdl:part element="impl:searchProductResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchProductRequest">
+
+      <wsdl:part element="impl:searchProduct" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="SearchProduct">
+
+      <wsdl:operation name="searchProduct">
+
+         <wsdl:input message="impl:searchProductRequest" name="searchProductRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchProductResponse" name="searchProductResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="SearchProductSoapBinding" type="impl:SearchProduct">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="searchProduct">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchProductRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchProductResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="SearchProductService">
+
+      <wsdl:port binding="impl:SearchProductSoapBinding" name="SearchProduct">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/SearchProduct"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
