@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://getProductInventoryAvailable.ofbiz.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://getProductInventoryAvailable.ofbiz.com" xmlns:intf="http://getProductInventoryAvailable.ofbiz.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://getProductInventoryAvailable.ofbiz.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="getProductInventoryAvailable">
+    <complexType>
+     <sequence>
+      <element name="getProductInventoryAvailableInput" type="impl:GetProductInventoryAvailableInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="GetProductInventoryAvailableInput">
+    <sequence>
+     <element name="productId" nillable="true" type="xsd:string"/>
+     <element name="inventoryItemId" nillable="true" type="xsd:string"/>
+     <element name="shipAfterDate" nillable="true" type="xsd:string"/>
+     <element name="quantity" type="xsd:double"/>
+    </sequence>
+   </complexType>
+   <element name="getProductInventoryAvailableResponse">
+    <complexType>
+     <sequence>
+      <element name="getProductInventoryAvailableReturn" type="impl:GetProductInventoryAvailableOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="GetProductInventoryAvailableOutput">
+    <sequence>
+     <element name="isAvailable" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getProductInventoryAvailableRequest">
+
+      <wsdl:part element="impl:getProductInventoryAvailable" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getProductInventoryAvailableResponse">
+
+      <wsdl:part element="impl:getProductInventoryAvailableResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GetProductInventoryAvailable">
+
+      <wsdl:operation name="getProductInventoryAvailable">
+
+         <wsdl:input message="impl:getProductInventoryAvailableRequest" name="getProductInventoryAvailableRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getProductInventoryAvailableResponse" name="getProductInventoryAvailableResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GetProductInventoryAvailableSoapBinding" type="impl:GetProductInventoryAvailable">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getProductInventoryAvailable">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getProductInventoryAvailableRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getProductInventoryAvailableResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GetProductInventoryAvailableService">
+
+      <wsdl:port binding="impl:GetProductInventoryAvailableSoapBinding" name="GetProductInventoryAvailable">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/GetProductInventoryAvailable"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

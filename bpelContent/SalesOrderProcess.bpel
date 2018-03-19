@@ -5,7 +5,7 @@
          suppressJoinFailure="yes"
          xmlns:tns="salesorder"
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com">
+         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com">
 
     <!-- Import the client WSDL -->
     <bpel:import namespace="http://searchproduct.ofbiz.com" location="SearchProduct.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
@@ -25,6 +25,7 @@
                      />
         <bpel:partnerLink name="CreateCartForCustomerServicePL" partnerLinkType="tns:CreateCartForCustomerServicePLT" partnerRole="CreateCartForCustomerServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="SearchProductServicePL" partnerLinkType="tns:SearchProductServicePLT" partnerRole="SearchProductServicePLR"></bpel:partnerLink>
+        <bpel:partnerLink name="GetProductInventoryAvailableServicePL" partnerLinkType="tns:GetProductInventoryAvailableServicePLT" partnerRole="GetProductInventoryAvailableServicePLR"></bpel:partnerLink>
     </bpel:partnerLinks>
   
     <!-- ================================================================= -->         
@@ -58,6 +59,13 @@
         <bpel:variable name="OutputSearchProductResponse" messageType="tns:searchProductResponse"></bpel:variable>
         <bpel:variable name="SearchProductServicePLResponse" messageType="ns0:searchProductResponse"></bpel:variable>
         <bpel:variable name="SearchProductServicePLRequest" messageType="ns0:searchProductRequest"></bpel:variable>
+        <bpel:variable name="InputGetProductInventoryAvailableRequest" messageType="tns:getProductInventoryAvailableRequest"></bpel:variable>
+        <bpel:variable name="OutputGetProductInventoryAvailableResponse" messageType="tns:getProductInventoryAvailableResponse"></bpel:variable>
+        <bpel:variable name="GetProductInventoryAvailableServicePLResponse" messageType="ns2:getProductInventoryAvailableResponse"></bpel:variable>
+        <bpel:variable name="GetProductInventoryAvailableServicePLRequest" messageType="ns2:getProductInventoryAvailableRequest"></bpel:variable>
+        <bpel:variable name="quantity" type="ns1:double"></bpel:variable>
+        <bpel:variable name="shipAfterDate" type="ns1:string"></bpel:variable>
+        <bpel:variable name="isAvailable" type="ns1:boolean"></bpel:variable>
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -312,6 +320,98 @@
             </bpel:copy>
         </bpel:assign>
         <bpel:reply name="ReplyOutputsSearchProduct" partnerLink="client" operation="searchProduct" portType="tns:SalesOrderProcess" variable="OutputSearchProductResponse"></bpel:reply>
+        <bpel:receive name="ReceiveInputsGetProductInventoryAvailable" partnerLink="client" operation="getProductInventoryAvailable" portType="tns:SalesOrderProcess" variable="InputGetProductInventoryAvailableRequest">
+            <bpel:correlations>
+                <bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
+            </bpel:correlations>
+        </bpel:receive>
+        <bpel:assign validate="no" name="AssignInputsGetProductInventoryAvailable">
+            <bpel:copy>
+                <bpel:from><bpel:literal><impl:getProductInventoryAvailable xmlns:impl="http://getProductInventoryAvailable.ofbiz.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <impl:getProductInventoryAvailableInput>
+    <impl:productId>impl:productId</impl:productId>
+    <impl:inventoryItemId>impl:inventoryItemId</impl:inventoryItemId>
+    <impl:shipAfterDate>impl:shipAfterDate</impl:shipAfterDate>
+    <impl:quantity>0.0</impl:quantity>
+  </impl:getProductInventoryAvailableInput>
+</impl:getProductInventoryAvailable>
+</bpel:literal></bpel:from>
+                <bpel:to variable="GetProductInventoryAvailableServicePLRequest" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputGetProductInventoryAvailableRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:Quantity]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="quantity"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputGetProductInventoryAvailableRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:ShipAfterDate]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="shipAfterDate"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="productID"></bpel:from>
+                <bpel:to part="parameters" variable="GetProductInventoryAvailableServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns2:getProductInventoryAvailableInput/ns2:productId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="inventoryItemID"></bpel:from>
+                <bpel:to part="parameters" variable="GetProductInventoryAvailableServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns2:getProductInventoryAvailableInput/ns2:inventoryItemId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="shipAfterDate"></bpel:from>
+                <bpel:to part="parameters" variable="GetProductInventoryAvailableServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns2:getProductInventoryAvailableInput/ns2:shipAfterDate]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="quantity"></bpel:from>
+                <bpel:to part="parameters" variable="GetProductInventoryAvailableServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns2:getProductInventoryAvailableInput/ns2:quantity]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:invoke name="InvokeGetProductInventoryAvailable" partnerLink="GetProductInventoryAvailableServicePL" operation="getProductInventoryAvailable" portType="ns2:GetProductInventoryAvailable" inputVariable="GetProductInventoryAvailableServicePLRequest" outputVariable="GetProductInventoryAvailableServicePLResponse"></bpel:invoke>
+        <bpel:assign validate="no" name="AssignOutputsGetProductInventoryAvailable">
+            <bpel:copy>
+                <bpel:from><bpel:literal><tns:getProductInventoryAvailableResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:IsAvailable>true</tns:IsAvailable>
+</tns:getProductInventoryAvailableResponse>
+</bpel:literal></bpel:from>
+                <bpel:to variable="OutputGetProductInventoryAvailableResponse" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="GetProductInventoryAvailableServicePLResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns2:getProductInventoryAvailableReturn/ns2:isAvailable]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="isAvailable"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="isAvailable"></bpel:from>
+                <bpel:to part="parameters" variable="OutputGetProductInventoryAvailableResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:IsAvailable]]></bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:reply name="ReplyOutputsGetProductInventoryAvailable" partnerLink="client" operation="getProductInventoryAvailable" portType="tns:SalesOrderProcess" variable="OutputGetProductInventoryAvailableResponse"></bpel:reply>
     </bpel:sequence>
 </bpel:process>
 
