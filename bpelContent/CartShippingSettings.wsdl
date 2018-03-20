@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://cartshippingsettings.ofbiz.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://cartshippingsettings.ofbiz.com" xmlns:intf="http://cartshippingsettings.ofbiz.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://cartshippingsettings.ofbiz.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="updateCartShippingSettings">
+    <complexType>
+     <sequence>
+      <element name="cartShippingSettingsInput" type="impl:CartShippingSettingsInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CartShippingSettingsInput">
+    <sequence>
+     <element name="cartId" nillable="true" type="xsd:string"/>
+     <element name="customerId" nillable="true" type="xsd:string"/>
+     <element name="shipToName" nillable="true" type="xsd:string"/>
+     <element name="address" nillable="true" type="xsd:string"/>
+     <element name="city" nillable="true" type="xsd:string"/>
+     <element name="postalCode" nillable="true" type="xsd:string"/>
+     <element name="countryGeoId" nillable="true" type="xsd:string"/>
+     <element name="stateProvinceGeoId" nillable="true" type="xsd:string"/>
+     <element name="telephone" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="carrierPartyId" nillable="true" type="xsd:string"/>
+     <element name="shipmentMethodTypeId" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="updateCartShippingSettingsResponse">
+    <complexType>
+     <sequence>
+      <element name="updateCartShippingSettingsReturn" type="impl:CartShippingSettingsOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CartShippingSettingsOutput">
+    <sequence>
+     <element name="responseMessage" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="updateCartShippingSettingsResponse">
+
+      <wsdl:part element="impl:updateCartShippingSettingsResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateCartShippingSettingsRequest">
+
+      <wsdl:part element="impl:updateCartShippingSettings" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="CartShippingSettings">
+
+      <wsdl:operation name="updateCartShippingSettings">
+
+         <wsdl:input message="impl:updateCartShippingSettingsRequest" name="updateCartShippingSettingsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:updateCartShippingSettingsResponse" name="updateCartShippingSettingsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CartShippingSettingsSoapBinding" type="impl:CartShippingSettings">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="updateCartShippingSettings">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateCartShippingSettingsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateCartShippingSettingsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CartShippingSettingsService">
+
+      <wsdl:port binding="impl:CartShippingSettingsSoapBinding" name="CartShippingSettings">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/CartShippingSettings"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

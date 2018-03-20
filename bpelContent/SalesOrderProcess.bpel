@@ -5,9 +5,10 @@
          suppressJoinFailure="yes"
          xmlns:tns="salesorder"
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com">
+         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com">
 
     <!-- Import the client WSDL -->
+    <bpel:import namespace="http://cartshippingsettings.ofbiz.com" location="CartShippingSettings.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://addcartitem.ofbiz.com" location="AddCartItem.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://searchproduct.ofbiz.com" location="SearchProduct.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://createCartForCustomer.ofbiz.ws" location="CreateCartForCustomer.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
@@ -28,6 +29,7 @@
         <bpel:partnerLink name="SearchProductServicePL" partnerLinkType="tns:SearchProductServicePLT" partnerRole="SearchProductServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="GetProductInventoryAvailableServicePL" partnerLinkType="tns:GetProductInventoryAvailableServicePLT" partnerRole="GetProductInventoryAvailableServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="AddCartItemServicePL" partnerLinkType="tns:AddCartItemServicePLT" partnerRole="AddCartItemServicePLR"></bpel:partnerLink>
+        <bpel:partnerLink name="CartShippingSettingsPL" partnerLinkType="tns:CartShippingSettingsPLT" partnerRole="CartShippingSettingsPLR"></bpel:partnerLink>
     </bpel:partnerLinks>
   
     <!-- ================================================================= -->         
@@ -73,6 +75,21 @@
         <bpel:variable name="AddCartItemServicePLResponse" messageType="ns3:addCartItemResponse"></bpel:variable>
         <bpel:variable name="AddCartItemServicePLRequest" messageType="ns3:addCartItemRequest"></bpel:variable>
         <bpel:variable name="cartItemSeqID" type="ns1:string"></bpel:variable>
+        <bpel:variable name="InputCartShippingSettingsRequest" messageType="tns:UpdateShippingPreferenceRequest"></bpel:variable>
+        <bpel:variable name="OutputCartShippingSettingsResponse" messageType="tns:UpdateShippingPreferenceResponse"></bpel:variable>
+        <bpel:variable name="CartShippingSettingsPLResponse" messageType="ns4:updateCartShippingSettingsResponse"></bpel:variable>
+        <bpel:variable name="CartShippingSettingsPLRequest" messageType="ns4:updateCartShippingSettingsRequest"></bpel:variable>
+        <bpel:variable name="shipToName" type="ns1:string"></bpel:variable>
+        <bpel:variable name="address" type="ns1:string"></bpel:variable>
+        <bpel:variable name="city" type="ns1:string"></bpel:variable>
+        <bpel:variable name="postalCode" type="ns1:string"></bpel:variable>
+        <bpel:variable name="countryGeoID" type="ns1:string"></bpel:variable>
+        <bpel:variable name="stateProvinceGeoID" type="ns1:string"></bpel:variable>
+        <bpel:variable name="telephone" type="ns1:string"></bpel:variable>
+        <bpel:variable name="email" type="ns1:string"></bpel:variable>
+        <bpel:variable name="carrierPartyID" type="ns1:string"></bpel:variable>
+        <bpel:variable name="shipmentMehodTypeID" type="ns1:string"></bpel:variable>
+        
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -580,6 +597,237 @@
                     </bpel:copy>
                 </bpel:assign>
                 <bpel:reply name="ReplyOutputsAddCartItemTRUE" partnerLink="client" operation="AddCartItem" portType="tns:SalesOrderProcess" variable="OutputAddCartItemResponse"></bpel:reply>
+                <bpel:receive name="ReceiveInputsCartShippingSettings" partnerLink="client" operation="UpdateShippingPreference" portType="tns:SalesOrderProcess" variable="InputCartShippingSettingsRequest"><bpel:correlations>
+                <bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
+            </bpel:correlations>
+        
+                </bpel:receive>
+                <bpel:assign validate="no" name="AssignInputsCartShippingSettings">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <bpel:copy>
+                <bpel:from><bpel:literal><impl:updateCartShippingSettings xmlns:impl="http://cartshippingsettings.ofbiz.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <impl:cartShippingSettingsInput>
+    <impl:cartId>impl:cartId</impl:cartId>
+    <impl:customerId>impl:customerId</impl:customerId>
+    <impl:shipToName>impl:shipToName</impl:shipToName>
+    <impl:address>impl:address</impl:address>
+    <impl:city>impl:city</impl:city>
+    <impl:postalCode>impl:postalCode</impl:postalCode>
+    <impl:countryGeoId>impl:countryGeoId</impl:countryGeoId>
+    <impl:stateProvinceGeoId>impl:stateProvinceGeoId</impl:stateProvinceGeoId>
+    <impl:telephone>impl:telephone</impl:telephone>
+    <impl:email>impl:email</impl:email>
+    <impl:carrierPartyId>impl:carrierPartyId</impl:carrierPartyId>
+    <impl:shipmentMethodTypeId>impl:shipmentMethodTypeId</impl:shipmentMethodTypeId>
+  </impl:cartShippingSettingsInput>
+</impl:updateCartShippingSettings>
+</bpel:literal></bpel:from>
+                <bpel:to variable="CartShippingSettingsPLRequest" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:ShipToName]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="shipToName"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:Address]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="address"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:City]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="city"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:PostalCode]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="postalCode"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:CountryGeoID]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="countryGeoID"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:StateProvinceGeoID]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="stateProvinceGeoID"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:Telephone]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="telephone"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:Email]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="email"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:CarrierPartyID]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="carrierPartyID"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputCartShippingSettingsRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:ShipmentMethodTypeID]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="shipmentMehodTypeID"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="cartID"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:cartId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="customerID"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:customerId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="shipToName"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:shipToName]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="address"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:address]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            
+            <bpel:copy>
+                <bpel:from variable="city"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:city]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="countryGeoID"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:countryGeoId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="stateProvinceGeoID"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:stateProvinceGeoId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="telephone"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:telephone]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="email"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:email]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="carrierPartyID"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:carrierPartyId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="shipmentMehodTypeID"></bpel:from>
+                <bpel:to part="parameters" variable="CartShippingSettingsPLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns4:cartShippingSettingsInput/ns4:shipmentMethodTypeId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        
+                </bpel:assign>
+                <bpel:invoke name="InvokeCartShippingSettings" partnerLink="CartShippingSettingsPL" operation="updateCartShippingSettings" portType="ns4:CartShippingSettings" inputVariable="CartShippingSettingsPLRequest" outputVariable="CartShippingSettingsPLResponse"></bpel:invoke>
+                <bpel:assign validate="no" name="AssignOutputsCartShippingSettings"><bpel:copy>
+                <bpel:from><bpel:literal><tns:UpdateShippingPreferenceResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:ResponseMessage>tns:ResponseMessage</tns:ResponseMessage>
+</tns:UpdateShippingPreferenceResponse>
+</bpel:literal></bpel:from>
+                <bpel:to variable="OutputCartShippingSettingsResponse" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="CartShippingSettingsPLResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns4:updateCartShippingSettingsReturn/ns4:responseMessage]]></bpel:query>
+                </bpel:from>
+                <bpel:to part="parameters" variable="OutputCartShippingSettingsResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:ResponseMessage]]></bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        
+                </bpel:assign>
+                <bpel:reply name="ReplyOutputsCartShippingSettings" partnerLink="client" operation="UpdateShippingPreference" portType="tns:SalesOrderProcess" variable="OutputCartShippingSettingsResponse"></bpel:reply>
             </bpel:sequence>
             <bpel:else>
                 <bpel:sequence>
@@ -655,6 +903,12 @@
                 </bpel:sequence>
             </bpel:else>
         </bpel:if>
+        
+        
+        
+        
+        
+        
         
         
         

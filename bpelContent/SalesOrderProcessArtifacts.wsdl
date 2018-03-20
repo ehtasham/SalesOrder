@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="salesorder" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl1="http://searchproduct.ofbiz.com" xmlns:wsdl2="http://getProductInventoryAvailable.ofbiz.com" xmlns:wsdl3="http://addcartitem.ofbiz.com" name="SalesOrderProcess" targetNamespace="salesorder">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="salesorder" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl1="http://searchproduct.ofbiz.com" xmlns:wsdl2="http://getProductInventoryAvailable.ofbiz.com" xmlns:wsdl3="http://addcartitem.ofbiz.com" xmlns:wsdl4="http://cartshippingsettings.ofbiz.com" name="SalesOrderProcess" targetNamespace="salesorder">
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      TYPE DEFINITION - List of types participating in this BPEL process 
@@ -32,10 +32,17 @@
     <plnk:partnerLinkType name="AddCartItemServicePLT">
     <plnk:role name="AddCartItemServicePLR" portType="wsdl3:AddCartItem"/>
   </plnk:partnerLinkType>
+    <vprop:propertyAlias messageType="tns:UpdateShippingPreferenceRequest" part="parameters" propertyName="tns:property">
+    <vprop:query><![CDATA[/tns:Key]]></vprop:query>
+  </vprop:propertyAlias>
+    <plnk:partnerLinkType name="CartShippingSettingsPLT">
+    <plnk:role name="CartShippingSettingsPLR" portType="wsdl4:CartShippingSettings"/>
+  </plnk:partnerLinkType>
     <import location="CreateCartForCustomer.wsdl" namespace="http://createCartForCustomer.ofbiz.ws"/>
     <import location="SearchProduct.wsdl" namespace="http://searchproduct.ofbiz.com"/>
     <import location="GetProductInventoryAvailable.wsdl" namespace="http://getProductInventoryAvailable.ofbiz.com"/>
     <import location="AddCartItem.wsdl" namespace="http://addcartitem.ofbiz.com"/>
+    <import location="CartShippingSettings.wsdl" namespace="http://cartshippingsettings.ofbiz.com"/>
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="salesorder">
 
@@ -114,6 +121,33 @@
             		</sequence>
             	</complexType>
             </element>
+            <element name="UpdateShippingPreference">
+            	<complexType>
+            		<sequence>
+
+            			<element name="Key" type="string"/>
+            			<element name="ShipToName" type="string"/>
+            			<element name="Address" type="string"/>
+            			<element name="City" type="string"/>
+            			<element name="PostalCode" type="string"/>
+            			<element name="CountryGeoID" type="string"/>
+            			<element name="StateProvinceGeoID" type="string">
+            			</element>
+            			<element name="Telephone" type="string"/>
+            			<element name="Email" type="string"/>
+            			<element name="CarrierPartyID" type="string"/>
+            			<element name="ShipmentMethodTypeID" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="UpdateShippingPreferenceResponse">
+            	<complexType>
+            		<sequence>
+
+            			<element name="ResponseMessage" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
         </schema>
     </types>
 
@@ -153,6 +187,12 @@
     <message name="AddCartItemResponse">
     	<part element="tns:AddCartItemResponse" name="parameters"/>
     </message>
+    <message name="UpdateShippingPreferenceRequest">
+    	<part element="tns:UpdateShippingPreference" name="parameters"/>
+    </message>
+    <message name="UpdateShippingPreferenceResponse">
+    	<part element="tns:UpdateShippingPreferenceResponse" name="parameters"/>
+    </message>
     <portType name="SalesOrderProcess">
         <operation name="createCartForCustomer">
             <input message="tns:SalesOrderProcessRequestMessage"/>
@@ -170,6 +210,10 @@
         	<input message="tns:AddCartItemRequest"/>
         	<output message="tns:AddCartItemResponse"/>
         </operation>
+        <operation name="UpdateShippingPreference">
+        	<input message="tns:UpdateShippingPreferenceRequest"/>
+        	<output message="tns:UpdateShippingPreferenceResponse"/>
+        </operation>
     </portType>   
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      PARTNER LINK TYPE DEFINITION
@@ -183,46 +227,51 @@
      BINDING DEFINITION - Defines the message format and protocol details
      for a web service.
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <binding name="SalesOrderProcessBinding"
-    	type="tns:SalesOrderProcess">
-    	<soap:binding style="document"
-    		transport="http://schemas.xmlsoap.org/soap/http" />
+    <binding name="SalesOrderProcessBinding" type="tns:SalesOrderProcess">
+    	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     	<operation name="createCartForCustomer">
-    		<soap:operation
-    			soapAction="salesorder/createCartForCustomer" />
+    		<soap:operation soapAction="salesorder/createCartForCustomer"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="searchProduct">
-    		<soap:operation soapAction="salesorder/searchProduct" />
+    		<soap:operation soapAction="salesorder/searchProduct"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="getProductInventoryAvailable">
-    		<soap:operation
-    			soapAction="salesorder/getProductInventoryAvailable" />
+    		<soap:operation soapAction="salesorder/getProductInventoryAvailable"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="AddCartItem">
-    		<soap:operation soapAction="salesorder/AddCartItem" />
+    		<soap:operation soapAction="salesorder/AddCartItem"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
+    		</output>
+    	</operation>
+    	<operation name="UpdateShippingPreference">
+    		<soap:operation soapAction="salesorder/UpdateShippingPreference"/>
+    		<input>
+    			<soap:body use="literal"/>
+    		</input>
+    		<output>
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     </binding>
