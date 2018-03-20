@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://shippingServices.sample.ws" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://shippingServices.sample.ws" xmlns:intf="http://shippingServices.sample.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://shippingServices.sample.ws" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="verifyAddress">
+    <complexType>
+     <sequence>
+      <element name="input" type="impl:VerifyAddressInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="VerifyAddressInput">
+    <sequence>
+     <element name="AddressLine" nillable="true" type="xsd:string"/>
+     <element name="ZipCode" nillable="true" type="xsd:string"/>
+     <element name="City" nillable="true" type="xsd:string"/>
+     <element name="StateAbbrev" nillable="true" type="xsd:string"/>
+     <element name="LicenseKey" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="verifyAddressResponse">
+    <complexType>
+     <sequence>
+      <element name="verifyAddressReturn" type="impl:VerifyAddressOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="VerifyAddressOutput">
+    <sequence>
+     <element name="AvgLongitude" nillable="true" type="xsd:string"/>
+     <element name="AvgLatitude" nillable="true" type="xsd:string"/>
+     <element name="AddressError" nillable="true" type="xsd:string"/>
+     <element name="error" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="calc_shipping">
+    <complexType>
+     <sequence>
+      <element name="in" type="impl:CalcShippingInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CalcShippingInput">
+    <sequence>
+     <element name="cartId" nillable="true" type="xsd:string"/>
+     <element name="carrierId" nillable="true" type="xsd:string"/>
+     <element name="shipmentMethodTypeId" nillable="true" type="xsd:string"/>
+     <element name="shipping_address" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="calc_shippingResponse">
+    <complexType>
+     <sequence>
+      <element name="calc_shippingReturn" type="impl:CalcShippingOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CalcShippingOutput">
+    <sequence>
+     <element name="shipment_costEstimate" type="xsd:double"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="verifyAddressResponse">
+
+      <wsdl:part element="impl:verifyAddressResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="calc_shippingRequest">
+
+      <wsdl:part element="impl:calc_shipping" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="calc_shippingResponse">
+
+      <wsdl:part element="impl:calc_shippingResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="verifyAddressRequest">
+
+      <wsdl:part element="impl:verifyAddress" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="ShippingService">
+
+      <wsdl:operation name="verifyAddress">
+
+         <wsdl:input message="impl:verifyAddressRequest" name="verifyAddressRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:verifyAddressResponse" name="verifyAddressResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="calc_shipping">
+
+         <wsdl:input message="impl:calc_shippingRequest" name="calc_shippingRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:calc_shippingResponse" name="calc_shippingResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ShippingServiceSoapBinding" type="impl:ShippingService">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="verifyAddress">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="verifyAddressRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="verifyAddressResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="calc_shipping">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="calc_shippingRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="calc_shippingResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ShippingServiceService">
+
+      <wsdl:port binding="impl:ShippingServiceSoapBinding" name="ShippingService">
+
+         <wsdlsoap:address location="http://203.135.63.69/OFBizDemoAssemble_3rdParyWS_v2/services/ShippingService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

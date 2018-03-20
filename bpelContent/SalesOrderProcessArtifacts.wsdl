@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="salesorder" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl1="http://searchproduct.ofbiz.com" xmlns:wsdl2="http://getProductInventoryAvailable.ofbiz.com" xmlns:wsdl3="http://addcartitem.ofbiz.com" xmlns:wsdl4="http://cartshippingsettings.ofbiz.com" xmlns:wsdl5="http://cartpaymentpreference.ofbiz.com" xmlns:wsdl6="http://taxServices.sample.ws" name="SalesOrderProcess" targetNamespace="salesorder">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="salesorder" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl1="http://searchproduct.ofbiz.com" xmlns:wsdl2="http://getProductInventoryAvailable.ofbiz.com" xmlns:wsdl3="http://addcartitem.ofbiz.com" xmlns:wsdl4="http://cartshippingsettings.ofbiz.com" xmlns:wsdl5="http://cartpaymentpreference.ofbiz.com" xmlns:wsdl6="http://taxServices.sample.ws" xmlns:wsdl7="http://shippingServices.sample.ws" name="SalesOrderProcess" targetNamespace="salesorder">
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      TYPE DEFINITION - List of types participating in this BPEL process 
@@ -50,6 +50,12 @@
     <vprop:propertyAlias messageType="tns:calcualateSalesTaxRequest" part="parameters" propertyName="tns:property">
     <vprop:query><![CDATA[/tns:Key]]></vprop:query>
   </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns:calculateShippingRequest" part="parameters" propertyName="tns:property">
+    <vprop:query><![CDATA[/tns:Key]]></vprop:query>
+  </vprop:propertyAlias>
+    <plnk:partnerLinkType name="CalculateShippingServicePLT">
+    <plnk:role name="CalculateShippingServicePLR" portType="wsdl7:ShippingService"/>
+  </plnk:partnerLinkType>
     <import location="CreateCartForCustomer.wsdl" namespace="http://createCartForCustomer.ofbiz.ws"/>
     <import location="SearchProduct.wsdl" namespace="http://searchproduct.ofbiz.com"/>
     <import location="GetProductInventoryAvailable.wsdl" namespace="http://getProductInventoryAvailable.ofbiz.com"/>
@@ -57,6 +63,7 @@
     <import location="CartShippingSettings.wsdl" namespace="http://cartshippingsettings.ofbiz.com"/>
     <import location="CartPaymentPreference.wsdl" namespace="http://cartpaymentpreference.ofbiz.com"/>
     <import location="CalculateSalesTax.wsdl" namespace="http://taxServices.sample.ws"/>
+    <import location="ShippingService.wsdl" namespace="http://shippingServices.sample.ws"/>
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="salesorder">
 
@@ -202,6 +209,22 @@
             		</sequence>
             	</complexType>
             </element>
+            <element name="calculateShipping">
+            	<complexType>
+            		<sequence>
+
+            			<element name="Key" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="calculateShippingResponse">
+            	<complexType>
+            		<sequence>
+
+            			<element name="ShipmentCostEstimate" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
         </schema>
     </types>
 
@@ -259,6 +282,12 @@
     <message name="calcualateSalesTaxResponse">
     	<part element="tns:calcualateSalesTaxResponse" name="parameters"/>
     </message>
+    <message name="calculateShippingRequest">
+    	<part element="tns:calculateShipping" name="parameters"/>
+    </message>
+    <message name="calculateShippingResponse">
+    	<part element="tns:calculateShippingResponse" name="parameters"/>
+    </message>
     <portType name="SalesOrderProcess">
         <operation name="createCartForCustomer">
             <input message="tns:SalesOrderProcessRequestMessage"/>
@@ -287,6 +316,10 @@
         <operation name="calcualateSalesTax">
         	<input message="tns:calcualateSalesTaxRequest"/>
         	<output message="tns:calcualateSalesTaxResponse"/>
+        </operation>
+        <operation name="calculateShipping">
+        	<input message="tns:calculateShippingRequest"/>
+        	<output message="tns:calculateShippingResponse"/>
         </operation>
     </portType>   
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -365,6 +398,15 @@
     	</operation>
     	<operation name="calcualateSalesTax">
     		<soap:operation soapAction="salesorder/calcualateSalesTax" />
+    		<input>
+    			<soap:body use="literal" />
+    		</input>
+    		<output>
+    			<soap:body use="literal" />
+    		</output>
+    	</operation>
+    	<operation name="calculateShipping">
+    		<soap:operation soapAction="salesorder/calculateShipping" />
     		<input>
     			<soap:body use="literal" />
     		</input>

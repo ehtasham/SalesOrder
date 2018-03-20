@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:addcartitem.ofbiz.com="http://addcartitem.ofbiz.com" xmlns:cartpaymentpreference.ofbiz.com="http://cartpaymentpreference.ofbiz.com" xmlns:cartshippingsettings.ofbiz.com="http://cartshippingsettings.ofbiz.com" xmlns:createCartForCustomer.ofbiz.ws="http://createCartForCustomer.ofbiz.ws" xmlns:getProductInventoryAvailable.ofbiz.com="http://getProductInventoryAvailable.ofbiz.com" xmlns:salesorder="salesorder" xmlns:searchproduct.ofbiz.com="http://searchproduct.ofbiz.com" xmlns:taxServices.sample.ws="http://taxServices.sample.ws">
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:addcartitem.ofbiz.com="http://addcartitem.ofbiz.com" xmlns:cartpaymentpreference.ofbiz.com="http://cartpaymentpreference.ofbiz.com" xmlns:cartshippingsettings.ofbiz.com="http://cartshippingsettings.ofbiz.com" xmlns:createCartForCustomer.ofbiz.ws="http://createCartForCustomer.ofbiz.ws" xmlns:getProductInventoryAvailable.ofbiz.com="http://getProductInventoryAvailable.ofbiz.com" xmlns:salesorder="salesorder" xmlns:searchproduct.ofbiz.com="http://searchproduct.ofbiz.com" xmlns:shippingServices.sample.ws="http://shippingServices.sample.ws" xmlns:taxServices.sample.ws="http://taxServices.sample.ws">
   <process name="salesorder:SalesOrderProcess">
     <active>true</active>
     <process-events generate="all"/>
@@ -26,6 +26,9 @@
     </invoke>
     <invoke partnerLink="CalculateSalesTaxServicePL">
       <service name="taxServices.sample.ws:CalculateSalesTaxService" port="CalculateSalesTax"/>
+    </invoke>
+    <invoke partnerLink="CalculateShippingServicePL">
+      <service name="shippingServices.sample.ws:ShippingServiceService" port="ShippingService"/>
     </invoke>
   </process>
 </deploy>
