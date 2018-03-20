@@ -5,9 +5,10 @@
          suppressJoinFailure="yes"
          xmlns:tns="salesorder"
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com" xmlns:ns5="http://cartpaymentpreference.ofbiz.com">
+         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com" xmlns:ns5="http://cartpaymentpreference.ofbiz.com" xmlns:ns6="http://taxServices.sample.ws">
 
     <!-- Import the client WSDL -->
+    <bpel:import namespace="http://taxServices.sample.ws" location="CalculateSalesTax.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://cartshippingsettings.ofbiz.com" location="CartShippingSettings.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://addcartitem.ofbiz.com" location="AddCartItem.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://searchproduct.ofbiz.com" location="SearchProduct.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
@@ -31,6 +32,7 @@
         <bpel:partnerLink name="AddCartItemServicePL" partnerLinkType="tns:AddCartItemServicePLT" partnerRole="AddCartItemServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="CartShippingSettingsPL" partnerLinkType="tns:CartShippingSettingsPLT" partnerRole="CartShippingSettingsPLR"></bpel:partnerLink>
         <bpel:partnerLink name="UpdateCartPaymentPreferencePL" partnerLinkType="tns:UpdateCartPaymentPreferencePLT" partnerRole="UpdateCartPaymentPreferencePLR"></bpel:partnerLink>
+        <bpel:partnerLink name="CalculateSalesTaxServicePL" partnerLinkType="tns:CalculateSalesTaxServicePLT" partnerRole="CalculateSalesTaxServicePLR"></bpel:partnerLink>
     </bpel:partnerLinks>
   
     <!-- ================================================================= -->         
@@ -102,6 +104,12 @@
         <bpel:variable name="expirationYear" type="ns1:string"></bpel:variable>
         <bpel:variable name="expirationMonth" type="ns1:string"></bpel:variable>
         <bpel:variable name="paymentMethod" type="ns1:string"></bpel:variable>
+        <bpel:variable name="TaxAmount" type="ns1:string"></bpel:variable>
+        <bpel:variable name="TaxRate" type="ns1:string"></bpel:variable>
+        <bpel:variable name="InputCalculateSalesTaxRequest" messageType="tns:calcualateSalesTaxRequest"></bpel:variable>
+        <bpel:variable name="OutputCalculateSalesTaxResponse" messageType="tns:calcualateSalesTaxResponse"></bpel:variable>
+        <bpel:variable name="CalculateSalesTaxServicePLResponse" messageType="ns6:calculateSalesTaxResponse"></bpel:variable>
+        <bpel:variable name="CalculateSalesTaxServicePLRequest" messageType="ns6:calculateSalesTaxRequest"></bpel:variable>
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -1123,6 +1131,118 @@
             </bpel:copy>
         </bpel:assign>
         <bpel:reply name="ReplyOutputsUpdateCartPaymentPreference" partnerLink="client" operation="updateCartPaymentPreference" portType="tns:SalesOrderProcess" variable="OutputUpdateCartPaymentPreferenceResponse"></bpel:reply>
+        <bpel:receive name="ReceiveInputCalculateSalesTax" partnerLink="client" operation="calcualateSalesTax" portType="tns:SalesOrderProcess" variable="InputCalculateSalesTaxRequest">
+            <bpel:correlations>
+                <bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
+            </bpel:correlations>
+        </bpel:receive>
+        <bpel:assign validate="no" name="AssignInputsCalculateSalesTax">
+            <bpel:copy>
+                <bpel:from><bpel:literal><impl:calculateSalesTax xmlns:impl="http://taxServices.sample.ws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <impl:in>
+    <impl:taxClassId>impl:taxClassId</impl:taxClassId>
+    <impl:categoryId>impl:categoryId</impl:categoryId>
+    <impl:quantity>0.0</impl:quantity>
+    <impl:price>0.0</impl:price>
+    <impl:shipping_address_id>impl:shipping_address_id</impl:shipping_address_id>
+  </impl:in>
+</impl:calculateSalesTax>
+</bpel:literal></bpel:from>
+                <bpel:to variable="CalculateSalesTaxServicePLRequest" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="taxClassID"></bpel:from>
+                <bpel:to part="parameters" variable="CalculateSalesTaxServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns6:in/ns6:taxClassId]]></bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="categoryID"></bpel:from>
+                <bpel:to part="parameters" variable="CalculateSalesTaxServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns6:in/ns6:categoryId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="quantity"></bpel:from>
+                <bpel:to part="parameters" variable="CalculateSalesTaxServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns6:in/ns6:quantity]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="price"></bpel:from>
+                <bpel:to part="parameters" variable="CalculateSalesTaxServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns6:in/ns6:price]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="postalCode"></bpel:from>
+                <bpel:to part="parameters" variable="CalculateSalesTaxServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns6:in/ns6:shipping_address_id]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:invoke name="InvokeCalculateSalesTaxService" partnerLink="CalculateSalesTaxServicePL" operation="calculateSalesTax" portType="ns6:CalculateSalesTax" inputVariable="CalculateSalesTaxServicePLRequest" outputVariable="CalculateSalesTaxServicePLResponse"></bpel:invoke>
+        <bpel:assign validate="no" name="AssignOutputsCalculateSalesTax">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <bpel:copy>
+                <bpel:from><bpel:literal><tns:calcualateSalesTaxResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:TaxAmount>tns:TaxAmount</tns:TaxAmount>
+  <tns:TaxRate>tns:TaxRate</tns:TaxRate>
+</tns:calcualateSalesTaxResponse>
+</bpel:literal></bpel:from>
+                <bpel:to variable="OutputCalculateSalesTaxResponse" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="CalculateSalesTaxServicePLResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns6:calculateSalesTaxReturn/ns6:taxAmount]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="TaxAmount"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="CalculateSalesTaxServicePLResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns6:calculateSalesTaxReturn/ns6:taxRate]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="TaxRate"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="TaxAmount"></bpel:from>
+                <bpel:to part="parameters" variable="OutputCalculateSalesTaxResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:TaxAmount]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="TaxRate"></bpel:from>
+                <bpel:to part="parameters" variable="OutputCalculateSalesTaxResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:TaxRate]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:reply name="ReplyOutputCalculateSalesTax" partnerLink="client" operation="calcualateSalesTax" portType="tns:SalesOrderProcess" variable="OutputCalculateSalesTaxResponse"></bpel:reply>
     </bpel:sequence>
 </bpel:process>
 
