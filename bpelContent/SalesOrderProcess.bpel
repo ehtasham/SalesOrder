@@ -524,30 +524,59 @@
                     
                     
                     
-                    <bpel:copy><bpel:from><bpel:literal><tns:AddCartItemResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    
+                    
+                    
+                    
+                    
+                    
+                    <bpel:copy>
+                        <bpel:from><bpel:literal><tns:AddCartItemResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <tns:CartItemSeqID>tns:CartItemSeqID</tns:CartItemSeqID>
 </tns:AddCartItemResponse>
 </bpel:literal></bpel:from>
-                <bpel:to variable="OutputAddCartItemResponse" part="parameters"></bpel:to>
-            
+                        <bpel:to variable="OutputAddCartItemResponse" part="parameters"></bpel:to>
                     </bpel:copy>
-                    <bpel:copy><bpel:from part="parameters" variable="AddCartItemServicePLResponse">
+                    <bpel:copy>
+                        <bpel:from part="parameters" variable="AddCartItemServicePLResponse">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
                                 <![CDATA[ns3:addCartItemReturn/ns3:cart_item_seq_id]]>
                             </bpel:query>
                         </bpel:from>
-                <bpel:to part="parameters" variable="OutputAddCartItemResponse">
-                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:CartItemSeqID]]></bpel:query>
-                </bpel:to>
-            
+                        <bpel:to variable="cartID"></bpel:to>
                     </bpel:copy>
-                    <bpel:copy><bpel:from part="parameters" variable="AddCartItemServicePLResponse">
-                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
-                                <![CDATA[ns3:addCartItemReturn/ns3:cart_item_seq_id]]>
-                            </bpel:query>
+                    <bpel:copy>
+                        <bpel:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <![CDATA["Item Added To Cart"]]>
                         </bpel:from>
-                        <bpel:to variable="cartItemSeqID"></bpel:to>
-                    
+                        <bpel:to part="parameters" variable="OutputAddCartItemResponse">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                                <![CDATA[tns:CartItemSeqID]]>
+                            </bpel:query>
+                        </bpel:to>
                     </bpel:copy>
                 </bpel:assign>
                 <bpel:reply name="ReplyOutputsAddCartItemTRUE" partnerLink="client" operation="AddCartItem" portType="tns:SalesOrderProcess" variable="OutputAddCartItemResponse"></bpel:reply>
