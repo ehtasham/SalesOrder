@@ -597,13 +597,103 @@
                     </bpel:copy>
                 </bpel:assign>
                 <bpel:reply name="ReplyOutputsAddCartItemTRUE" partnerLink="client" operation="AddCartItem" portType="tns:SalesOrderProcess" variable="OutputAddCartItemResponse"></bpel:reply>
-                <bpel:receive name="ReceiveInputsCartShippingSettings" partnerLink="client" operation="UpdateShippingPreference" portType="tns:SalesOrderProcess" variable="InputCartShippingSettingsRequest"><bpel:correlations>
-                <bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
-            </bpel:correlations>
+                
+                
+                
+                
+                
+            </bpel:sequence>
+            <bpel:else>
+                <bpel:sequence>
+                    <bpel:assign validate="no" name="AssignOutputsAddCartItemFALSE">
+                        
+                        <bpel:copy>
+                            <bpel:from><bpel:literal><tns:AddCartItemResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:CartItemSeqID>tns:CartItemSeqID</tns:CartItemSeqID>
+</tns:AddCartItemResponse>
+</bpel:literal></bpel:from>
+                            <bpel:to variable="OutputAddCartItemResponse" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                <![CDATA["Product Not Present in Inventory"]]>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="OutputAddCartItemResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                                    <![CDATA[tns:CartItemSeqID]]>
+                                </bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:reply name="ReplyOutputsAddCartItemFALSE" partnerLink="client" operation="AddCartItem" portType="tns:SalesOrderProcess" variable="OutputAddCartItemResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:else>
+        </bpel:if>
         
-                </bpel:receive>
-                <bpel:assign validate="no" name="AssignInputsCartShippingSettings">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <bpel:receive name="ReceiveInputsCartShippingSettings" partnerLink="client" operation="UpdateShippingPreference" portType="tns:SalesOrderProcess" variable="InputCartShippingSettingsRequest">
+            <bpel:correlations><bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
             
+            </bpel:correlations>
+                
+        </bpel:receive>
+        <bpel:assign validate="no" name="AssignInputsCartShippingSettings">
             
             
             
@@ -808,16 +898,17 @@
                 </bpel:to>
             </bpel:copy>
         
-                </bpel:assign>
-                <bpel:invoke name="InvokeCartShippingSettings" partnerLink="CartShippingSettingsPL" operation="updateCartShippingSettings" portType="ns4:CartShippingSettings" inputVariable="CartShippingSettingsPLRequest" outputVariable="CartShippingSettingsPLResponse"></bpel:invoke>
-                <bpel:assign validate="no" name="AssignOutputsCartShippingSettings"><bpel:copy>
-                <bpel:from><bpel:literal><tns:UpdateShippingPreferenceResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                
+        </bpel:assign>
+        <bpel:invoke name="InvokeCartShippingSettings" partnerLink="CartShippingSettingsPL" operation="updateCartShippingSettings" portType="ns4:CartShippingSettings" inputVariable="CartShippingSettingsPLRequest" outputVariable="CartShippingSettingsPLResponse"></bpel:invoke>
+        <bpel:assign validate="no" name="AssignOutputsCartShippingSettings">
+            <bpel:copy><bpel:from><bpel:literal><tns:UpdateShippingPreferenceResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <tns:ResponseMessage>tns:ResponseMessage</tns:ResponseMessage>
 </tns:UpdateShippingPreferenceResponse>
 </bpel:literal></bpel:from>
                 <bpel:to variable="OutputCartShippingSettingsResponse" part="parameters"></bpel:to>
-            </bpel:copy>
-            <bpel:copy>
+            
+            </bpel:copy><bpel:copy>
                 <bpel:from part="parameters" variable="CartShippingSettingsPLResponse">
                     <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns4:updateCartShippingSettingsReturn/ns4:responseMessage]]></bpel:query>
                 </bpel:from>
@@ -826,93 +917,9 @@
                 </bpel:to>
             </bpel:copy>
         
-                </bpel:assign>
-                <bpel:reply name="ReplyOutputsCartShippingSettings" partnerLink="client" operation="UpdateShippingPreference" portType="tns:SalesOrderProcess" variable="OutputCartShippingSettingsResponse"></bpel:reply>
-            </bpel:sequence>
-            <bpel:else>
-                <bpel:sequence>
-                    <bpel:assign validate="no" name="AssignOutputsAddCartItemFALSE">
-                        
-                        <bpel:copy>
-                            <bpel:from><bpel:literal><tns:AddCartItemResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <tns:CartItemSeqID>tns:CartItemSeqID</tns:CartItemSeqID>
-</tns:AddCartItemResponse>
-</bpel:literal></bpel:from>
-                            <bpel:to variable="OutputAddCartItemResponse" part="parameters"></bpel:to>
-                        </bpel:copy>
-                        <bpel:copy>
-                            <bpel:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                <![CDATA["Product Not Present in Inventory"]]>
-                            </bpel:from>
-                            <bpel:to part="parameters" variable="OutputAddCartItemResponse">
-                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
-                                    <![CDATA[tns:CartItemSeqID]]>
-                                </bpel:query>
-                            </bpel:to>
-                        </bpel:copy>
-                    </bpel:assign>
-                    <bpel:reply name="ReplyOutputsAddCartItemFALSE" partnerLink="client" operation="AddCartItem" portType="tns:SalesOrderProcess" variable="OutputAddCartItemResponse"></bpel:reply>
-                </bpel:sequence>
-            </bpel:else>
-        </bpel:if>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+                
+        </bpel:assign>
+        <bpel:reply name="ReplyOutputsCartShippingSettings" partnerLink="client" operation="UpdateShippingPreference" portType="tns:SalesOrderProcess" variable="OutputCartShippingSettingsResponse"></bpel:reply>
     </bpel:sequence>
 </bpel:process>
 

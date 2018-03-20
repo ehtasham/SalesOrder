@@ -2,7 +2,7 @@
 <extensionmodel:ExtensionMap xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:extensionmodel="http:///extensionmodel.ecore" xmlns:org.eclipse.bpel.ui.uiextensionmodel="http:///org/eclipse/bpel/ui/uiextensionmodel.ecore" namespace="http://org.eclipse.bpel.ui/">
   <extensions>
     <extendedObject href="SalesOrderProcess.bpel#/"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1521553122724"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1521553599463"/>
   </extensions>
   <extensions>
     <extendedObject href="SalesOrderProcess.bpel#//@variables/@children.0"/>
@@ -489,119 +489,119 @@
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.4"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.17"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.6"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.19"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.8"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.21"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.1"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.1"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.2"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.2"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.3"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.3"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.4"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.4"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.5"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.5"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.6"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.6"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.7"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.7"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.8"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.8"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.9"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.9"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.10"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.10"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.11"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.11"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.0"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.0"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.12"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.12"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.13"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.13"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.14"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.14"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.15"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.15"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.16"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.16"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.17"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.17"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.18"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.18"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.19"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.19"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.20"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.20"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.5/@copy.21"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.18/@copy.21"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.7"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.20"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.7/@copy.1"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.20/@copy.1"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.16/@activity/@activities.7/@copy.0"/>
+    <extendedObject href="SalesOrderProcess.bpel#//@activity/@activities.20/@copy.0"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
 </extensionmodel:ExtensionMap>
