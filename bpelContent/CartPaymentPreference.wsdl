@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://cartpaymentpreference.ofbiz.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://cartpaymentpreference.ofbiz.com" xmlns:intf="http://cartpaymentpreference.ofbiz.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://cartpaymentpreference.ofbiz.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="updateCartPaymentPreference">
+    <complexType>
+     <sequence>
+      <element name="cartPaymentPreferenceInput" type="impl:CartPaymentPreferenceInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CartPaymentPreferenceInput">
+    <sequence>
+     <element name="cartId" nillable="true" type="xsd:string"/>
+     <element name="customerId" nillable="true" type="xsd:string"/>
+     <element name="firstName" nillable="true" type="xsd:string"/>
+     <element name="lastName" nillable="true" type="xsd:string"/>
+     <element name="currencyUom" nillable="true" type="xsd:string"/>
+     <element name="issueNumber" nillable="true" type="xsd:string"/>
+     <element name="cardNumber" nillable="true" type="xsd:string"/>
+     <element name="cardType" nillable="true" type="xsd:string"/>
+     <element name="expYear" nillable="true" type="xsd:string"/>
+     <element name="expMonth" nillable="true" type="xsd:string"/>
+     <element name="paymentMethod" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="updateCartPaymentPreferenceResponse">
+    <complexType>
+     <sequence>
+      <element name="updateCartPaymentPreferenceReturn" type="impl:CartPaymentPreferenceOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CartPaymentPreferenceOutput">
+    <sequence>
+     <element name="responseMessage" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="updateCartPaymentPreferenceRequest">
+
+      <wsdl:part element="impl:updateCartPaymentPreference" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateCartPaymentPreferenceResponse">
+
+      <wsdl:part element="impl:updateCartPaymentPreferenceResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="CartPaymentPreference">
+
+      <wsdl:operation name="updateCartPaymentPreference">
+
+         <wsdl:input message="impl:updateCartPaymentPreferenceRequest" name="updateCartPaymentPreferenceRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:updateCartPaymentPreferenceResponse" name="updateCartPaymentPreferenceResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CartPaymentPreferenceSoapBinding" type="impl:CartPaymentPreference">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="updateCartPaymentPreference">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateCartPaymentPreferenceRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateCartPaymentPreferenceResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CartPaymentPreferenceService">
+
+      <wsdl:port binding="impl:CartPaymentPreferenceSoapBinding" name="CartPaymentPreference">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/CartPaymentPreference"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

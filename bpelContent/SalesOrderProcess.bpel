@@ -5,7 +5,7 @@
          suppressJoinFailure="yes"
          xmlns:tns="salesorder"
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com">
+         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com" xmlns:ns5="http://cartpaymentpreference.ofbiz.com">
 
     <!-- Import the client WSDL -->
     <bpel:import namespace="http://cartshippingsettings.ofbiz.com" location="CartShippingSettings.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
@@ -30,6 +30,7 @@
         <bpel:partnerLink name="GetProductInventoryAvailableServicePL" partnerLinkType="tns:GetProductInventoryAvailableServicePLT" partnerRole="GetProductInventoryAvailableServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="AddCartItemServicePL" partnerLinkType="tns:AddCartItemServicePLT" partnerRole="AddCartItemServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="CartShippingSettingsPL" partnerLinkType="tns:CartShippingSettingsPLT" partnerRole="CartShippingSettingsPLR"></bpel:partnerLink>
+        <bpel:partnerLink name="UpdateCartPaymentPreferencePL" partnerLinkType="tns:UpdateCartPaymentPreferencePLT" partnerRole="UpdateCartPaymentPreferencePLR"></bpel:partnerLink>
     </bpel:partnerLinks>
   
     <!-- ================================================================= -->         
@@ -90,6 +91,17 @@
         <bpel:variable name="carrierPartyID" type="ns1:string"></bpel:variable>
         <bpel:variable name="shipmentMehodTypeID" type="ns1:string"></bpel:variable>
         
+        <bpel:variable name="InputUpdateCartPaymentPreferenceRequest" messageType="tns:updateCartPaymentPreferenceRequest"></bpel:variable>
+        <bpel:variable name="OutputUpdateCartPaymentPreferenceResponse" messageType="tns:updateCartPaymentPreferenceResponse"></bpel:variable>
+        <bpel:variable name="UpdateCartPaymentPreferencePLResponse" messageType="ns5:updateCartPaymentPreferenceResponse"></bpel:variable>
+        <bpel:variable name="UpdateCartPaymentPreferencePLRequest" messageType="ns5:updateCartPaymentPreferenceRequest"></bpel:variable>
+        <bpel:variable name="currency" type="ns1:string"></bpel:variable>
+        <bpel:variable name="issueNumber" type="ns1:string"></bpel:variable>
+        <bpel:variable name="cardNumber" type="ns1:string"></bpel:variable>
+        <bpel:variable name="cardType" type="ns1:string"></bpel:variable>
+        <bpel:variable name="expirationYear" type="ns1:string"></bpel:variable>
+        <bpel:variable name="expirationMonth" type="ns1:string"></bpel:variable>
+        <bpel:variable name="paymentMethod" type="ns1:string"></bpel:variable>
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -920,6 +932,197 @@
                 
         </bpel:assign>
         <bpel:reply name="ReplyOutputsCartShippingSettings" partnerLink="client" operation="UpdateShippingPreference" portType="tns:SalesOrderProcess" variable="OutputCartShippingSettingsResponse"></bpel:reply>
+        <bpel:receive name="ReceiveInputsUpdateCartPaymentPreference" partnerLink="client" operation="updateCartPaymentPreference" portType="tns:SalesOrderProcess" variable="InputUpdateCartPaymentPreferenceRequest">
+            <bpel:correlations>
+                <bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
+            </bpel:correlations>
+        </bpel:receive>
+        <bpel:assign validate="no" name="AssignInputsUpdateCartPaymentPreference">
+            <bpel:copy>
+                <bpel:from><bpel:literal><impl:updateCartPaymentPreference xmlns:impl="http://cartpaymentpreference.ofbiz.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <impl:cartPaymentPreferenceInput>
+    <impl:cartId>impl:cartId</impl:cartId>
+    <impl:customerId>impl:customerId</impl:customerId>
+    <impl:firstName>impl:firstName</impl:firstName>
+    <impl:lastName>impl:lastName</impl:lastName>
+    <impl:currencyUom>impl:currencyUom</impl:currencyUom>
+    <impl:issueNumber>impl:issueNumber</impl:issueNumber>
+    <impl:cardNumber>impl:cardNumber</impl:cardNumber>
+    <impl:cardType>impl:cardType</impl:cardType>
+    <impl:expYear>impl:expYear</impl:expYear>
+    <impl:expMonth>impl:expMonth</impl:expMonth>
+    <impl:paymentMethod>impl:paymentMethod</impl:paymentMethod>
+  </impl:cartPaymentPreferenceInput>
+</impl:updateCartPaymentPreference>
+</bpel:literal></bpel:from>
+                <bpel:to variable="UpdateCartPaymentPreferencePLRequest" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputUpdateCartPaymentPreferenceRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:Currency]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="currency"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputUpdateCartPaymentPreferenceRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:IssueNumber]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="issueNumber"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputUpdateCartPaymentPreferenceRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:CardNumber]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="cardNumber"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputUpdateCartPaymentPreferenceRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:CardType]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="cardType"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputUpdateCartPaymentPreferenceRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:ExpirationYear]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="expirationYear"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputUpdateCartPaymentPreferenceRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:ExpirationMonth]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="expirationMonth"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="InputUpdateCartPaymentPreferenceRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:PaymentMethod]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="paymentMethod"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="cartID"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:cartId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            
+            <bpel:copy>
+                <bpel:from variable="customerID"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:customerId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="firstName"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:firstName]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="lastName"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:lastName]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="currency"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:currencyUom]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="issueNumber"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:issueNumber]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="cardNumber"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:cardNumber]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="cardType"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:cardType]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="expirationYear"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:expYear]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="expirationMonth"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:expMonth]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            
+            <bpel:copy>
+                <bpel:from variable="paymentMethod"></bpel:from>
+                <bpel:to part="parameters" variable="UpdateCartPaymentPreferencePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns5:cartPaymentPreferenceInput/ns5:paymentMethod]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:invoke name="InvokeUpdateCartPaymentPreference" partnerLink="UpdateCartPaymentPreferencePL" operation="updateCartPaymentPreference" portType="ns5:CartPaymentPreference" inputVariable="UpdateCartPaymentPreferencePLRequest" outputVariable="UpdateCartPaymentPreferencePLResponse"></bpel:invoke>
+        <bpel:assign validate="no" name="AssignOutputsUpdateCartPaymentPreference">
+            <bpel:copy>
+                <bpel:from><bpel:literal><tns:updateCartPaymentPreferenceResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:ResponseMessage>tns:ResponseMessage</tns:ResponseMessage>
+</tns:updateCartPaymentPreferenceResponse>
+</bpel:literal></bpel:from>
+                <bpel:to variable="OutputUpdateCartPaymentPreferenceResponse" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="UpdateCartPaymentPreferencePLResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns5:updateCartPaymentPreferenceReturn/ns5:responseMessage]]></bpel:query>
+                </bpel:from>
+                <bpel:to part="parameters" variable="OutputUpdateCartPaymentPreferenceResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:ResponseMessage]]></bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:reply name="ReplyOutputsUpdateCartPaymentPreference" partnerLink="client" operation="updateCartPaymentPreference" portType="tns:SalesOrderProcess" variable="OutputUpdateCartPaymentPreferenceResponse"></bpel:reply>
     </bpel:sequence>
 </bpel:process>
 
