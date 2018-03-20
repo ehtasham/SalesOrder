@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:createCartForCustomer.ofbiz.ws="http://createCartForCustomer.ofbiz.ws" xmlns:getProductInventoryAvailable.ofbiz.com="http://getProductInventoryAvailable.ofbiz.com" xmlns:salesorder="salesorder" xmlns:searchproduct.ofbiz.com="http://searchproduct.ofbiz.com">
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:addcartitem.ofbiz.com="http://addcartitem.ofbiz.com" xmlns:createCartForCustomer.ofbiz.ws="http://createCartForCustomer.ofbiz.ws" xmlns:getProductInventoryAvailable.ofbiz.com="http://getProductInventoryAvailable.ofbiz.com" xmlns:salesorder="salesorder" xmlns:searchproduct.ofbiz.com="http://searchproduct.ofbiz.com">
   <process name="salesorder:SalesOrderProcess">
     <active>true</active>
     <process-events generate="all"/>
@@ -14,6 +14,9 @@
     </invoke>
     <invoke partnerLink="GetProductInventoryAvailableServicePL">
       <service name="getProductInventoryAvailable.ofbiz.com:GetProductInventoryAvailableService" port="GetProductInventoryAvailable"/>
+    </invoke>
+    <invoke partnerLink="AddCartItemServicePL">
+      <service name="addcartitem.ofbiz.com:AddCartItemService" port="AddCartItem"/>
     </invoke>
   </process>
 </deploy>

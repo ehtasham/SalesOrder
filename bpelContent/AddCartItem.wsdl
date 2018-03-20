@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://addcartitem.ofbiz.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://addcartitem.ofbiz.com" xmlns:intf="http://addcartitem.ofbiz.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://addcartitem.ofbiz.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="addCartItem">
+    <complexType>
+     <sequence>
+      <element name="addCartItemInput" type="impl:AddCartItemInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="AddCartItemInput">
+    <sequence>
+     <element name="cartId" nillable="true" type="xsd:string"/>
+     <element name="customerId" nillable="true" type="xsd:string"/>
+     <element name="productId" nillable="true" type="xsd:string"/>
+     <element name="inventoryItemId" nillable="true" type="xsd:string"/>
+     <element name="taxClassId" nillable="true" type="xsd:string"/>
+     <element name="categoryId" nillable="true" type="xsd:string"/>
+     <element name="shipAfterDate" nillable="true" type="xsd:string"/>
+     <element name="quantity" type="xsd:double"/>
+    </sequence>
+   </complexType>
+   <element name="addCartItemResponse">
+    <complexType>
+     <sequence>
+      <element name="addCartItemReturn" type="impl:AddCartItemOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="AddCartItemOutput">
+    <sequence>
+     <element name="cart_item_seq_id" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="addCartItemResponse">
+
+      <wsdl:part element="impl:addCartItemResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="addCartItemRequest">
+
+      <wsdl:part element="impl:addCartItem" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="AddCartItem">
+
+      <wsdl:operation name="addCartItem">
+
+         <wsdl:input message="impl:addCartItemRequest" name="addCartItemRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:addCartItemResponse" name="addCartItemResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="AddCartItemSoapBinding" type="impl:AddCartItem">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="addCartItem">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="addCartItemRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="addCartItemResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="AddCartItemService">
+
+      <wsdl:port binding="impl:AddCartItemSoapBinding" name="AddCartItem">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/AddCartItem"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
