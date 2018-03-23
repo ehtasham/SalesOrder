@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://createCustomerOrder.ofbiz.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://createCustomerOrder.ofbiz.com" xmlns:intf="http://createCustomerOrder.ofbiz.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://createCustomerOrder.ofbiz.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="createOrder">
+    <complexType>
+     <sequence>
+      <element name="createOrderForCustomerInput" type="impl:CreateOrderForCustomerInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CreateOrderForCustomerInput">
+    <sequence>
+     <element name="cartId" nillable="true" type="xsd:string"/>
+     <element name="customerId" nillable="true" type="xsd:string"/>
+     <element name="taxAmount" type="xsd:double"/>
+     <element name="shipmentCharges" type="xsd:double"/>
+    </sequence>
+   </complexType>
+   <element name="createOrderResponse">
+    <complexType>
+     <sequence>
+      <element name="createOrderReturn" type="impl:CreateOrderForCustomerOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CreateOrderForCustomerOutput">
+    <sequence>
+     <element name="orderId" nillable="true" type="xsd:string"/>
+     <element name="statusId" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="createOrderRequest">
+
+      <wsdl:part element="impl:createOrder" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createOrderResponse">
+
+      <wsdl:part element="impl:createOrderResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="CreateOrder">
+
+      <wsdl:operation name="createOrder">
+
+         <wsdl:input message="impl:createOrderRequest" name="createOrderRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createOrderResponse" name="createOrderResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CreateOrderSoapBinding" type="impl:CreateOrder">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="createOrder">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createOrderRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createOrderResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CreateOrderService">
+
+      <wsdl:port binding="impl:CreateOrderSoapBinding" name="CreateOrder">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/CreateOrder"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
