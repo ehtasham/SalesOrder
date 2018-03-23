@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://getcartcontents.ofbiz.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://getcartcontents.ofbiz.com" xmlns:intf="http://getcartcontents.ofbiz.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://getcartcontents.ofbiz.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="getCartContents">
+    <complexType>
+     <sequence>
+      <element name="getCartContentsInput" type="impl:GetCartContentsInput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="GetCartContentsInput">
+    <sequence>
+     <element name="cartId" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="getCartContentsResponse">
+    <complexType>
+     <sequence>
+      <element name="getCartContentsReturn" type="impl:GetCartContentsOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CartItems">
+    <sequence>
+     <element name="itemDescription" nillable="true" type="xsd:string"/>
+     <element name="unitPrice" type="xsd:double"/>
+     <element name="quantity" type="xsd:double"/>
+     <element name="shipAfterDate" nillable="true" type="xsd:dateTime"/>
+     <element name="productId" nillable="true" type="xsd:string"/>
+     <element name="taxClassId" nillable="true" type="xsd:string"/>
+     <element name="categoryId" nillable="true" type="xsd:string"/>
+     <element name="inventoryItemId" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfCartItems">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:CartItems"/>
+    </sequence>
+   </complexType>
+   <complexType name="GetCartContentsOutput">
+    <sequence>
+     <element name="errorMessage" nillable="true" type="xsd:string"/>
+     <element name="responseMessage" nillable="true" type="xsd:string"/>
+     <element name="cartItems" nillable="true" type="impl:ArrayOfCartItems"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getCartContentsRequest">
+
+      <wsdl:part element="impl:getCartContents" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCartContentsResponse">
+
+      <wsdl:part element="impl:getCartContentsResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GetCartContents">
+
+      <wsdl:operation name="getCartContents">
+
+         <wsdl:input message="impl:getCartContentsRequest" name="getCartContentsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getCartContentsResponse" name="getCartContentsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GetCartContentsSoapBinding" type="impl:GetCartContents">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getCartContents">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getCartContentsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getCartContentsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GetCartContentsService">
+
+      <wsdl:port binding="impl:GetCartContentsSoapBinding" name="GetCartContents">
+
+         <wsdlsoap:address location="http://203.135.63.69/WrapperOFBiz_WebServices_v2/services/GetCartContents"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

@@ -5,7 +5,7 @@
          suppressJoinFailure="yes"
          xmlns:tns="salesorder"
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com" xmlns:ns5="http://cartpaymentpreference.ofbiz.com" xmlns:ns6="http://taxServices.sample.ws" xmlns:ns7="http://shippingServices.sample.ws">
+         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com" xmlns:ns5="http://cartpaymentpreference.ofbiz.com" xmlns:ns6="http://taxServices.sample.ws" xmlns:ns7="http://shippingServices.sample.ws" xmlns:ns8="http://getcartcontents.ofbiz.com">
 
     <!-- Import the client WSDL -->
     <bpel:import namespace="http://taxServices.sample.ws" location="CalculateSalesTax.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
@@ -34,6 +34,7 @@
         <bpel:partnerLink name="UpdateCartPaymentPreferencePL" partnerLinkType="tns:UpdateCartPaymentPreferencePLT" partnerRole="UpdateCartPaymentPreferencePLR"></bpel:partnerLink>
         <bpel:partnerLink name="CalculateSalesTaxServicePL" partnerLinkType="tns:CalculateSalesTaxServicePLT" partnerRole="CalculateSalesTaxServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="CalculateShippingServicePL" partnerLinkType="tns:CalculateShippingServicePLT" partnerRole="CalculateShippingServicePLR"></bpel:partnerLink>
+        <bpel:partnerLink name="GetCartContentServicePL" partnerLinkType="tns:GetContentServicePLT" partnerRole="GetContentServicePLR"></bpel:partnerLink>
     </bpel:partnerLinks>
   
     <!-- ================================================================= -->         
@@ -116,6 +117,11 @@
         <bpel:variable name="CalculateShippingServicePLResponse" messageType="ns7:calc_shippingResponse"></bpel:variable>
         <bpel:variable name="CalculateShippingServicePLRequest" messageType="ns7:calc_shippingRequest"></bpel:variable>
         <bpel:variable name="shipmentCostEstimate" type="ns1:string"></bpel:variable>
+        <bpel:variable name="InputGetCartContentRequest" messageType="tns:getCartContentRequest"></bpel:variable>
+        <bpel:variable name="OutputGetCartContentResponse" messageType="tns:getCartContentResponse"></bpel:variable>
+        <bpel:variable name="GetCartContentServicePLResponse" messageType="ns8:getCartContentsResponse"></bpel:variable>
+        <bpel:variable name="GetCartContentServicePLRequest" messageType="ns8:getCartContentsRequest"></bpel:variable>
+        <bpel:variable name="count" type="ns1:int"></bpel:variable>
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -1325,6 +1331,57 @@
             </bpel:copy>
         </bpel:assign>
         <bpel:reply name="ReplyOutputsCalculateShipping" partnerLink="client" operation="calculateShipping" portType="tns:SalesOrderProcess" variable="OutputCalculateShippingResponse"></bpel:reply>
+        <bpel:receive name="ReceiveInputsGetCartContent" partnerLink="client" operation="getCartContent" portType="tns:SalesOrderProcess" variable="InputGetCartContentRequest">
+            <bpel:correlations>
+                <bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
+            </bpel:correlations>
+        </bpel:receive>
+        <bpel:assign validate="no" name="AssignInputsGetCartContent">
+            <bpel:copy>
+                <bpel:from><bpel:literal><impl:getCartContents xmlns:impl="http://getcartcontents.ofbiz.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <impl:getCartContentsInput>
+    <impl:cartId>impl:cartId</impl:cartId>
+  </impl:getCartContentsInput>
+</impl:getCartContents>
+</bpel:literal></bpel:from>
+                <bpel:to variable="GetCartContentServicePLRequest" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="cartID"></bpel:from>
+                <bpel:to part="parameters" variable="GetCartContentServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns8:getCartContentsInput/ns8:cartId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:invoke name="InvokeGetCartContent" partnerLink="GetCartContentServicePL" operation="getCartContents" portType="ns8:GetCartContents" inputVariable="GetCartContentServicePLRequest" outputVariable="GetCartContentServicePLResponse"></bpel:invoke>
+        <bpel:assign validate="no" name="AssignOutputsGetCartContent">
+            
+            
+            <bpel:copy>
+                <bpel:from><bpel:literal><tns:getCartContentResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:CartItems>tns:CartItems</tns:CartItems>
+</tns:getCartContentResponse>
+</bpel:literal></bpel:from>
+                <bpel:to variable="OutputGetCartContentResponse" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                    <![CDATA[count($GetCartContentServicePLResponse.parameters/ns8:getCartContentsReturn/ns8:cartItems)]]>
+                </bpel:from>
+                <bpel:to variable="count"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="count"></bpel:from>
+                <bpel:to part="parameters" variable="OutputGetCartContentResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:CartItems]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:reply name="ReplyOutputsGetCartContent" partnerLink="client" operation="getCartContent" portType="tns:SalesOrderProcess" variable="OutputGetCartContentResponse"></bpel:reply>
     </bpel:sequence>
 </bpel:process>
 
