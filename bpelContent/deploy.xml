@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:addcartitem.ofbiz.com="http://addcartitem.ofbiz.com" xmlns:cartpaymentpreference.ofbiz.com="http://cartpaymentpreference.ofbiz.com" xmlns:cartshippingsettings.ofbiz.com="http://cartshippingsettings.ofbiz.com" xmlns:createCartForCustomer.ofbiz.ws="http://createCartForCustomer.ofbiz.ws" xmlns:createCustomerOrder.ofbiz.com="http://createCustomerOrder.ofbiz.com" xmlns:createinvoice.ofbiz.com="http://createinvoice.ofbiz.com" xmlns:getProductInventoryAvailable.ofbiz.com="http://getProductInventoryAvailable.ofbiz.com" xmlns:getcartcontents.ofbiz.com="http://getcartcontents.ofbiz.com" xmlns:salesorder="salesorder" xmlns:searchproduct.ofbiz.com="http://searchproduct.ofbiz.com" xmlns:shippingServices.sample.ws="http://shippingServices.sample.ws" xmlns:taxServices.sample.ws="http://taxServices.sample.ws">
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:CCServices.sample.ws="http://CCServices.sample.ws" xmlns:addcartitem.ofbiz.com="http://addcartitem.ofbiz.com" xmlns:cartpaymentpreference.ofbiz.com="http://cartpaymentpreference.ofbiz.com" xmlns:cartshippingsettings.ofbiz.com="http://cartshippingsettings.ofbiz.com" xmlns:createCartForCustomer.ofbiz.ws="http://createCartForCustomer.ofbiz.ws" xmlns:createCustomerOrder.ofbiz.com="http://createCustomerOrder.ofbiz.com" xmlns:createinvoice.ofbiz.com="http://createinvoice.ofbiz.com" xmlns:getProductInventoryAvailable.ofbiz.com="http://getProductInventoryAvailable.ofbiz.com" xmlns:getcartcontents.ofbiz.com="http://getcartcontents.ofbiz.com" xmlns:salesorder="salesorder" xmlns:searchproduct.ofbiz.com="http://searchproduct.ofbiz.com" xmlns:shippingServices.sample.ws="http://shippingServices.sample.ws" xmlns:taxServices.sample.ws="http://taxServices.sample.ws">
   <process name="salesorder:SalesOrderProcess">
     <active>true</active>
     <process-events generate="all"/>
@@ -38,6 +38,9 @@
     </invoke>
     <invoke partnerLink="CreatInvoiceServicePL">
       <service name="createinvoice.ofbiz.com:CreateInvoiceService" port="CreateInvoice"/>
+    </invoke>
+    <invoke partnerLink="CallCCServicePL">
+      <service name="CCServices.sample.ws:CCServiceService" port="CCService"/>
     </invoke>
   </process>
 </deploy>

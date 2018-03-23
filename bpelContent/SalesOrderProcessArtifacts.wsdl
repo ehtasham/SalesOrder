@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="salesorder" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl1="http://searchproduct.ofbiz.com" xmlns:wsdl10="http://createinvoice.ofbiz.com" xmlns:wsdl2="http://getProductInventoryAvailable.ofbiz.com" xmlns:wsdl3="http://addcartitem.ofbiz.com" xmlns:wsdl4="http://cartshippingsettings.ofbiz.com" xmlns:wsdl5="http://cartpaymentpreference.ofbiz.com" xmlns:wsdl6="http://taxServices.sample.ws" xmlns:wsdl7="http://shippingServices.sample.ws" xmlns:wsdl8="http://getcartcontents.ofbiz.com" xmlns:wsdl9="http://createCustomerOrder.ofbiz.com" name="SalesOrderProcess" targetNamespace="salesorder">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="salesorder" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://createCartForCustomer.ofbiz.ws" xmlns:wsdl1="http://searchproduct.ofbiz.com" xmlns:wsdl10="http://createinvoice.ofbiz.com" xmlns:wsdl11="http://CCServices.sample.ws" xmlns:wsdl2="http://getProductInventoryAvailable.ofbiz.com" xmlns:wsdl3="http://addcartitem.ofbiz.com" xmlns:wsdl4="http://cartshippingsettings.ofbiz.com" xmlns:wsdl5="http://cartpaymentpreference.ofbiz.com" xmlns:wsdl6="http://taxServices.sample.ws" xmlns:wsdl7="http://shippingServices.sample.ws" xmlns:wsdl8="http://getcartcontents.ofbiz.com" xmlns:wsdl9="http://createCustomerOrder.ofbiz.com" name="SalesOrderProcess" targetNamespace="salesorder">
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      TYPE DEFINITION - List of types participating in this BPEL process 
@@ -74,6 +74,12 @@
     <plnk:partnerLinkType name="CreatInvoiceServicePLT">
     <plnk:role name="CreatInvoiceServicePLR" portType="wsdl10:CreateInvoice"/>
   </plnk:partnerLinkType>
+    <vprop:propertyAlias messageType="tns:callCCServiceRequest" part="parameters" propertyName="tns:property">
+    <vprop:query><![CDATA[/tns:Key]]></vprop:query>
+  </vprop:propertyAlias>
+    <plnk:partnerLinkType name="CallCCServicePLT">
+    <plnk:role name="CallCCServicePLR" portType="wsdl11:CCService"/>
+  </plnk:partnerLinkType>
     <import location="CreateCartForCustomer.wsdl" namespace="http://createCartForCustomer.ofbiz.ws"/>
     <import location="SearchProduct.wsdl" namespace="http://searchproduct.ofbiz.com"/>
     <import location="GetProductInventoryAvailable.wsdl" namespace="http://getProductInventoryAvailable.ofbiz.com"/>
@@ -85,6 +91,7 @@
     <import location="GetCartContents.wsdl" namespace="http://getcartcontents.ofbiz.com"/>
     <import location="CreateOrder.wsdl" namespace="http://createCustomerOrder.ofbiz.com"/>
     <import location="CreateInvoice.wsdl" namespace="http://createinvoice.ofbiz.com"/>
+    <import location="CCService.wsdl" namespace="http://CCServices.sample.ws"/>
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="salesorder">
 
@@ -296,6 +303,28 @@
             		</sequence>
             	</complexType>
             </element>
+            <element name="callCCService">
+            	<complexType>
+            		<sequence>
+
+            			<element name="Key" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="callCCServiceResponse">
+            	<complexType>
+            		<sequence>
+
+            			<element name="PaymentTransactionID" type="string">
+            			</element>
+            			<element name="PaymentAcquirerID" type="string">
+            			</element>
+            			<element name="TxnRef" type="string"/>
+            			<element name="PaymentRefNum" type="string"/>
+            			<element name="Error" type="string"/>
+            		</sequence>
+            	</complexType>
+            </element>
         </schema>
     </types>
 
@@ -377,6 +406,12 @@
     <message name="createInvoiceResponse">
     	<part element="tns:createInvoiceResponse" name="parameters"/>
     </message>
+    <message name="callCCServiceRequest">
+    	<part element="tns:callCCService" name="parameters"/>
+    </message>
+    <message name="callCCServiceResponse">
+    	<part element="tns:callCCServiceResponse" name="parameters"/>
+    </message>
     <portType name="SalesOrderProcess">
         <operation name="createCartForCustomer">
             <input message="tns:SalesOrderProcessRequestMessage"/>
@@ -422,6 +457,10 @@
         	<input message="tns:createInvoiceRequest"/>
         	<output message="tns:createInvoiceResponse"/>
         </operation>
+        <operation name="callCCService">
+        	<input message="tns:callCCServiceRequest"/>
+        	<output message="tns:callCCServiceResponse"/>
+        </operation>
     </portType>   
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      PARTNER LINK TYPE DEFINITION
@@ -435,111 +474,114 @@
      BINDING DEFINITION - Defines the message format and protocol details
      for a web service.
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <binding name="SalesOrderProcessBinding"
-    	type="tns:SalesOrderProcess">
-    	<soap:binding style="document"
-    		transport="http://schemas.xmlsoap.org/soap/http" />
+    <binding name="SalesOrderProcessBinding" type="tns:SalesOrderProcess">
+    	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     	<operation name="createCartForCustomer">
-    		<soap:operation
-    			soapAction="salesorder/createCartForCustomer" />
+    		<soap:operation soapAction="salesorder/createCartForCustomer"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="searchProduct">
-    		<soap:operation soapAction="salesorder/searchProduct" />
+    		<soap:operation soapAction="salesorder/searchProduct"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="getProductInventoryAvailable">
-    		<soap:operation
-    			soapAction="salesorder/getProductInventoryAvailable" />
+    		<soap:operation soapAction="salesorder/getProductInventoryAvailable"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="AddCartItem">
-    		<soap:operation soapAction="salesorder/AddCartItem" />
+    		<soap:operation soapAction="salesorder/AddCartItem"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="UpdateShippingPreference">
-    		<soap:operation
-    			soapAction="salesorder/UpdateShippingPreference" />
+    		<soap:operation soapAction="salesorder/UpdateShippingPreference"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="updateCartPaymentPreference">
-    		<soap:operation
-    			soapAction="salesorder/updateCartPaymentPreference" />
+    		<soap:operation soapAction="salesorder/updateCartPaymentPreference"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="calcualateSalesTax">
-    		<soap:operation soapAction="salesorder/calcualateSalesTax" />
+    		<soap:operation soapAction="salesorder/calcualateSalesTax"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="calculateShipping">
-    		<soap:operation soapAction="salesorder/calculateShipping" />
+    		<soap:operation soapAction="salesorder/calculateShipping"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="getCartContent">
-    		<soap:operation soapAction="salesorder/getCartContent" />
+    		<soap:operation soapAction="salesorder/getCartContent"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="createOrder">
-    		<soap:operation soapAction="salesorder/createOrder" />
+    		<soap:operation soapAction="salesorder/createOrder"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     	<operation name="createInvoice">
-    		<soap:operation soapAction="salesorder/createInvoice" />
+    		<soap:operation soapAction="salesorder/createInvoice"/>
     		<input>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
     		</input>
     		<output>
-    			<soap:body use="literal" />
+    			<soap:body use="literal"/>
+    		</output>
+    	</operation>
+    	<operation name="callCCService">
+    		<soap:operation soapAction="salesorder/callCCService"/>
+    		<input>
+    			<soap:body use="literal"/>
+    		</input>
+    		<output>
+    			<soap:body use="literal"/>
     		</output>
     	</operation>
     </binding>

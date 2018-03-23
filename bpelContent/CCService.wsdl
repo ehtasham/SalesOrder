@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://CCServices.sample.ws" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://CCServices.sample.ws" xmlns:intf="http://CCServices.sample.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://CCServices.sample.ws" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="callCCService">
+    <complexType>
+     <sequence>
+      <element name="input" type="impl:CCServiceInputs"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CCServiceInputs">
+    <sequence>
+     <element name="invoiceId" nillable="true" type="xsd:string"/>
+     <element name="amount_ordered" nillable="true" type="xsd:string"/>
+     <element name="userName" nillable="true" type="xsd:string"/>
+     <element name="merchantRef" nillable="true" type="xsd:string"/>
+     <element name="txnData" nillable="true" type="xsd:string"/>
+     <element name="txnType" nillable="true" type="xsd:string"/>
+     <element name="urlFail" nillable="true" type="xsd:string"/>
+     <element name="urlSuccess" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="callCCServiceResponse">
+    <complexType>
+     <sequence>
+      <element name="callCCServiceReturn" type="impl:CCServiceOutput"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="CCServiceOutput">
+    <sequence>
+     <element name="paymentTransactionId" nillable="true" type="xsd:string"/>
+     <element name="paymentAcquirerId" nillable="true" type="xsd:string"/>
+     <element name="txnRef" nillable="true" type="xsd:string"/>
+     <element name="paymentRefNum" nillable="true" type="xsd:string"/>
+     <element name="error" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="callCCServiceRequest">
+
+      <wsdl:part element="impl:callCCService" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="callCCServiceResponse">
+
+      <wsdl:part element="impl:callCCServiceResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="CCService">
+
+      <wsdl:operation name="callCCService">
+
+         <wsdl:input message="impl:callCCServiceRequest" name="callCCServiceRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:callCCServiceResponse" name="callCCServiceResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CCServiceSoapBinding" type="impl:CCService">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="callCCService">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="callCCServiceRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="callCCServiceResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CCServiceService">
+
+      <wsdl:port binding="impl:CCServiceSoapBinding" name="CCService">
+
+         <wsdlsoap:address location="http://203.135.63.69/OFBizDemoAssemble_3rdParyWS_v2/services/CCService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
