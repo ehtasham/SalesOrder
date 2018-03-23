@@ -5,9 +5,10 @@
          suppressJoinFailure="yes"
          xmlns:tns="salesorder"
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com" xmlns:ns5="http://cartpaymentpreference.ofbiz.com" xmlns:ns6="http://taxServices.sample.ws" xmlns:ns7="http://shippingServices.sample.ws" xmlns:ns8="http://getcartcontents.ofbiz.com" xmlns:ns9="http://createCustomerOrder.ofbiz.com">
+         xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://createCartForCustomer.ofbiz.ws" xmlns:ns0="http://searchproduct.ofbiz.com" xmlns:ns2="http://getProductInventoryAvailable.ofbiz.com" xmlns:ns3="http://addcartitem.ofbiz.com" xmlns:ns4="http://cartshippingsettings.ofbiz.com" xmlns:ns5="http://cartpaymentpreference.ofbiz.com" xmlns:ns6="http://taxServices.sample.ws" xmlns:ns7="http://shippingServices.sample.ws" xmlns:ns8="http://getcartcontents.ofbiz.com" xmlns:ns9="http://createCustomerOrder.ofbiz.com" xmlns:ns10="http://createinvoice.ofbiz.com">
 
     <!-- Import the client WSDL -->
+    <bpel:import namespace="http://createinvoice.ofbiz.com" location="CreateInvoice.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://taxServices.sample.ws" location="CalculateSalesTax.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://cartshippingsettings.ofbiz.com" location="CartShippingSettings.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://addcartitem.ofbiz.com" location="AddCartItem.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
@@ -36,6 +37,7 @@
         <bpel:partnerLink name="CalculateShippingServicePL" partnerLinkType="tns:CalculateShippingServicePLT" partnerRole="CalculateShippingServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="GetCartContentServicePL" partnerLinkType="tns:GetContentServicePLT" partnerRole="GetContentServicePLR"></bpel:partnerLink>
         <bpel:partnerLink name="CreateOrderServicePL" partnerLinkType="tns:CreateOrderServicePLT" partnerRole="CreateOrderServicePLR"></bpel:partnerLink>
+        <bpel:partnerLink name="CreatInvoiceServicePL" partnerLinkType="tns:CreatInvoiceServicePLT" partnerRole="CreatInvoiceServicePLR"></bpel:partnerLink>
     </bpel:partnerLinks>
   
     <!-- ================================================================= -->         
@@ -129,6 +131,13 @@
         <bpel:variable name="CreateOrderServicePLRequest" messageType="ns9:createOrderRequest"></bpel:variable>
         <bpel:variable name="orderID" type="ns1:string"></bpel:variable>
         <bpel:variable name="statusID" type="ns1:string"></bpel:variable>
+        <bpel:variable name="InputCreateInvoiceRequest" messageType="tns:createInvoiceRequest"></bpel:variable>
+        <bpel:variable name="OutputCreateInvoiceResponse" messageType="tns:createInvoiceResponse"></bpel:variable>
+        <bpel:variable name="CreatInvoiceServicePLResponse" messageType="ns10:createInvoiceResponse"></bpel:variable>
+        <bpel:variable name="CreatInvoiceServicePLRequest" messageType="ns10:createInvoiceRequest"></bpel:variable>
+        <bpel:variable name="totalAmount" type="ns1:double"></bpel:variable>
+        <bpel:variable name="invoiceID" type="ns1:string"></bpel:variable>
+        <bpel:variable name="invoiceDate" type="ns1:string"></bpel:variable>
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -138,6 +147,7 @@
     <!-- ================================================================= -->         
     <bpel:correlationSets>
         <bpel:correlationSet name="CorrelationSet" properties="tns:property"></bpel:correlationSet>
+        
     </bpel:correlationSets>
     <bpel:sequence name="main">
         
@@ -1486,6 +1496,189 @@
             </bpel:copy>
         </bpel:assign>
         <bpel:reply name="ReplyOutputsCreateOrder" partnerLink="client" operation="createOrder" portType="tns:SalesOrderProcess" variable="OutputCreateOrderResponse"></bpel:reply>
+        <bpel:receive name="ReceiveInputsCreateInvoice" partnerLink="client" operation="createInvoice" portType="tns:SalesOrderProcess" variable="InputCreateInvoiceRequest">
+            <bpel:correlations>
+                <bpel:correlation set="CorrelationSet" initiate="no"></bpel:correlation>
+            </bpel:correlations>
+        </bpel:receive>
+        
+        <bpel:assign validate="no" name="AssignInputsCreateInvoice">
+            <bpel:copy>
+                <bpel:from><bpel:literal><impl:createInvoice xmlns:impl="http://createinvoice.ofbiz.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <impl:createInvoiceInput>
+    <impl:orderId>impl:orderId</impl:orderId>
+    <impl:statusId>impl:statusId</impl:statusId>
+    <impl:partyIdFrom>impl:partyIdFrom</impl:partyIdFrom>
+    <impl:taxAmount>0.0</impl:taxAmount>
+    <impl:shippingCharges>0.0</impl:shippingCharges>
+    <impl:totalAmount>0.0</impl:totalAmount>
+  </impl:createInvoiceInput>
+</impl:createInvoice>
+</bpel:literal></bpel:from>
+                <bpel:to variable="CreatInvoiceServicePLRequest" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="orderID"></bpel:from>
+                <bpel:to part="parameters" variable="CreatInvoiceServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns10:createInvoiceInput/ns10:orderId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="statusID"></bpel:from>
+                <bpel:to part="parameters" variable="CreatInvoiceServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns10:createInvoiceInput/ns10:statusId]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="customerID"></bpel:from>
+                <bpel:to part="parameters" variable="CreatInvoiceServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns10:createInvoiceInput/ns10:partyIdFrom]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="TaxAmount"></bpel:from>
+                <bpel:to part="parameters" variable="CreatInvoiceServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns10:createInvoiceInput/ns10:taxAmount]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="shipmentCostEstimate"></bpel:from>
+                <bpel:to part="parameters" variable="CreatInvoiceServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns10:createInvoiceInput/ns10:shippingCharges]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            
+            <bpel:copy>
+                <bpel:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <![CDATA[$TaxAmount + $shipmentCostEstimate]]>
+                </bpel:from>
+                <bpel:to variable="totalAmount"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="totalAmount"></bpel:from>
+                <bpel:to part="parameters" variable="CreatInvoiceServicePLRequest">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns10:createInvoiceInput/ns10:totalAmount]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:invoke name="InvokeCreateInvoice" partnerLink="CreatInvoiceServicePL" operation="createInvoice" portType="ns10:CreateInvoice" inputVariable="CreatInvoiceServicePLRequest" outputVariable="CreatInvoiceServicePLResponse"></bpel:invoke>
+        <bpel:assign validate="no" name="AssignOutputsCreateInvoice">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <bpel:copy>
+                <bpel:from><bpel:literal><tns:createInvoiceResponse xmlns:tns="salesorder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:InvoiceID>tns:InvoiceID</tns:InvoiceID>
+  <tns:InvoiceDate>tns:InvoiceDate</tns:InvoiceDate>
+</tns:createInvoiceResponse>
+</bpel:literal></bpel:from>
+                <bpel:to variable="OutputCreateInvoiceResponse" part="parameters"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="CreatInvoiceServicePLResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[ns10:createInvoiceReturn/ns10:invoiceId]]>
+                    </bpel:query>
+                </bpel:from>
+                <bpel:to variable="invoiceID"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="CreatInvoiceServicePLResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns10:createInvoiceReturn/ns10:invoiceDate]]></bpel:query>
+                </bpel:from>
+                <bpel:to variable="invoiceDate"></bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="invoiceID"></bpel:from>
+                <bpel:to part="parameters" variable="OutputCreateInvoiceResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:InvoiceID]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+            <bpel:copy>
+                <bpel:from variable="invoiceDate"></bpel:from>
+                <bpel:to part="parameters" variable="OutputCreateInvoiceResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:InvoiceDate]]>
+                    </bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:reply name="ReplyOutputsCreateInvoice" partnerLink="client" operation="createInvoice" portType="tns:SalesOrderProcess" variable="OutputCreateInvoiceResponse"></bpel:reply>
     </bpel:sequence>
 </bpel:process>
 
